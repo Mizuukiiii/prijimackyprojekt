@@ -10,9 +10,9 @@ const Navbar = () => {
           Your Logo or Brand
         </Typography>
         <Box sx={{ justifyContent: 'flex-start', ml:5 }}>
-          <NavbarItem href="/" label="Procvičování" options={[]} picture={undefined} description={''} />
-          <NavbarItem href="/about" label="Blog" options={[]} picture={undefined} description={''} />
-          <NavbarItem href="/contact" label="O projektu" options={[]} picture={undefined} description={''} />
+          <NavbarItem href="/" label="Procvičování" options={[]} picture={[]} description={[]} />
+          <NavbarItem href="/about" label="Blog" options={[]} picture={[]} description={[]} />
+          <NavbarItem href="/contact" label="O projektu" options={[]} picture={[]} description={[]} />
         </Box>
 
       </Toolbar>
