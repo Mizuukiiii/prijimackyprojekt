@@ -13,7 +13,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.11",
-    "firebase": "^10.4.0",
+    "firebase": "^10.5.0",
+    "graphql": "^16.8.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
