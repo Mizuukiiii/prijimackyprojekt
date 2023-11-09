@@ -7,9 +7,9 @@ import React, {
   useState,
 } from 'react';
 
-import { firebaseApp } from '@/firebase/config';
+import firebase from '@/firebase/config';
 
-const auth = getAuth(firebaseApp);
+const auth = getAuth(firebase);
 type AuthContextType = { currentUser?: User | null; loading?: boolean };
 export const AuthContext = React.createContext<AuthContextType>({});
 

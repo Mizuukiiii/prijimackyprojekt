@@ -1,0 +1,25 @@
+import * as admin from 'firebase-admin';
+
+const firebaseAdminConfig = {
+    type: "service_account",
+    project_id: "maturitniprojekt-74835",
+    private_key_id: "e9b7409489a0d87a9ad288065be5737081dd12ba",
+    private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCPaN00xiuWreb4\n860RJ77PmiTFa0O0+2cgFfHkKeJ3erZwl0hp/Zg8Q/PFRmd0TF0Y3mhnyv05ROzR\nYR2gObhRRpos2PJf/DsaHjtQZVPD9zBbQ93/WIDvbkB+3LL8a31V2/xDblwAT+u2\nqy5CGszvP8i15RDjzpN41YN1Klj8/BvkbRQib09P3UvYuH1aXBYJkrXS9F+MYplK\ni4RW9b12qcn0WsfgPbJfsCNxAoN4+ALVW+iH2I+w4XvcliY+I9XFDOnI4isBBXHs\nUw/AJZsVOO61UOwaeaDE7YLnxWd/8vvXpGGK+TgA3ed6bO30LQ2PhBEM78Rntxmm\n++FDK7nbAgMBAAECggEAFyZ6+x94fuEA1bRkfk33uASupe3sZqVk3uGcBFScmeQF\n2oQZbP7CmgvwKKr2XWhMaQzSNtsmaJ3PSveN9EUNE5W9orq82bDai5tQwOgyjwJy\n3HDGwAc1/TDDmZcgD658c6VJAkuo72X3a6wTkhlIduDJkk9xnAzHcqypBXt6FRCR\nvPEtmvn0E1ojlA+Em3pMgVdo8gR7oasGETjzr3lFRh7lIp0HFAtdvWjFKJzuxFPr\njxJs8PvrqALAY3ygTvmV42bNgkh8RDYAuQZI3C2a1Jf02tquk/nfL/AU8huvKQDm\np+rmsUtQjxivYXDW5A52fPq31KoKqVCn+9HYhREqKQKBgQDF+znXDBEc+xUKfYby\nrQNp+79UyT84JK7PkDH87dmKruBHsmySlDoKeEXuKkhPKWI/4+wRcuecA0F+lfpO\n+BZ6BSPUqBz4O5OTkWKphcazvbWFWFDaYwi4H6OPDuwzMKlhN72KiaUxvcugtpGp\nF5eQoEodk+2eiJy8xNJGExhh2QKBgQC5b5vIp/0QzD3F95TI4KXZ58PDuuvo6SgN\nbWBRkomptwavxfYnCu+Qm2KlCU+wVIE1UF1v/VDCac0JL/vHHoQA07MZe0UeVN7S\nDM3rm1sqODf9C/L0pri8Xk912EbTYZFDAkzqVZ7xuGNjR3BCMLkYCxv5g0unHXcI\nbxUKwOs00wKBgQClfETwl8mGK+l+h0ZReoSsBh37xOvvBdqI7MKb5EQ+Q8Z8p4tR\nSkzpi3cIiJdAdBsHxIACZcVrBt2r7bj4YS6Id9tnWc49P68vXgrWIFfizeP4vcV3\nheg331pbreGJOFecR3dLYZqPZVHb2D8Q1AOAhDrvVkL8jLxWnT4WDMgIoQKBgCck\nohPHMio7ksaZLnUAxsGqpK5KZMXzgZrj/bL6ZcjHc8fi18UCD/PMeRQxVPr5u5SP\ndEnRhRykzL0lvdYYYPDzvxif5sUyUR6xyT30u1e8KkVmIlD2aISKu+c6UikIrWsh\nry7ACB8qNwCb8dxnAItMvQj8aBnMpHXJTP3KH1w1AoGBAJCAZTCZtafaN4I6wlEn\nWhg7uSfKGviZAMKcH6HU/9jW+ZUmL+piU5Ofscp7N7kt7PkEuRJ3McsLl7BzD9Pf\nCkmDR22zQg8tGDB09l1KTtEVnhdDT8y7fQ/Z5amaROCyLwDbSZ6Bk5VROUfQ/ee2\n2i0xF6pDgSNEaiXKkj6ZCH5I\n-----END PRIVATE KEY-----\n",
+    client_email: "firebase-adminsdk-mgl71@maturitniprojekt-74835.iam.gserviceaccount.com",
+    client_id: "114926720906184672691",
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mgl71%40maturitniprojekt-74835.iam.gserviceaccount.com",
+    universe_domain: "googleapis.com"
+};
+if (admin.apps.length === 0) {
+  // Initialize Firebase
+  admin.initializeApp({
+    // @ts-ignore
+    credential: admin.credential.cert(firebaseAdminConfig),
+  });
+}
+// export const adminAuth = admin.auth;
+
+export const { firestore, auth: adminAuth } = admin;

@@ -23,7 +23,6 @@ import {
         password,
       );
   
-      // Update the user's profile with the provided display name
       await updateProfile(user, {
         displayName,
       });

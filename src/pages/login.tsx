@@ -1,10 +1,9 @@
 'use client';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
-// import { Navbar } from 'components/navbar';
+import { Box, Button, Link, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { FormEvent } from 'react';
-
+import { Navbar } from '@/components/navbar';
 import { authUtils } from '../firebase/auth-utils';
 
 function Login() {
@@ -16,9 +15,13 @@ function Login() {
     await authUtils.login(email, password);
     return router.push('/');
   };
+  const handleLogout = async () => {
+    await authUtils.logout();
+    return router.push('/');
+  };
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Box sx={{ mt: 30, mx: 69 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Typography fontWeight="bold" variant="h4">
@@ -54,6 +57,21 @@ function Login() {
             </Button>
           </Box>
         </form>
+        <Link href={'/registrace'} key={'registace'}>
+              <Button
+                variant="contained"
+                sx={{ mr: 2, backgroundColor: '#1961ff' }}
+              >
+                Registruj se
+              </Button>
+        </Link>
+        <Button
+              variant="contained"
+              sx={{ ml: 2, backgroundColor: '#1961ff' }}
+              onClick={handleLogout}
+            >
+              Odhlásit se
+            </Button>
       </Box>
     </>
   );

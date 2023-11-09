@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import router from 'next/router';
 import * as React from 'react';
-
+import { firebaseApp } from '@/firebase/config';
 import { authUtils } from '../firebase/auth-utils';
 import { useAuthContext } from './auth-context-provider';
 
@@ -39,8 +39,8 @@ function Navbar() {
     await authUtils.logout();
     return router.push('/');
   };
-
   return (
+    
     <AppBar
       position="static"
       style={{
@@ -67,7 +67,7 @@ function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              Prijimackylehce.cz
+              Prijimacky
             </Typography>
           </Link>
 

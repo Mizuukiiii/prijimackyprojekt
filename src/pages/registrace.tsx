@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, ImageList, ImageListItem, TextField, Typography } from '@mui/material';
 import { Navbar } from '../components/navbar';
 import { useRouter } from 'next/router';
 import React, { FormEvent } from 'react';
@@ -29,8 +29,8 @@ function Page() {
     const { value } = e.target;
     setPassword(value);
     setIsMatched(value === passwordAgain);
-    if (value.length < 6) {
-      setPasswordError('Neobsahuje 6 znaků');
+    if (value.length < 7) {
+      setPasswordError('Neobsahuje 7 znaků');
     } else if (/[A-Z]/.test(value)) {
       setPasswordError('');
     } else {
@@ -55,13 +55,14 @@ function Page() {
           </Typography>
         </Box>
         <form onSubmit={handleForm}>
+        <Box sx={{ height: 20 }}> </Box>
           <Box sx={{ height: 20 }}> </Box>
           <TextField
             required
             fullWidth
             id="jmeno"
             label="Jméno"
-            placeholder="Franta"
+            placeholder="Jméno"
             onChange={(e) => setName(e.target.value)}
           />
           <Box sx={{ height: 20 }}></Box>

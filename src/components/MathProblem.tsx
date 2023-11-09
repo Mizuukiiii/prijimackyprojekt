@@ -1,7 +1,7 @@
 // MathProblem.js
 import React from 'react';
 
-const MathProblem = ({ problem, choices, onSelectAnswer }) => {
+const MathProblem = ({ problem, choice, onSelectAnswer }) => {
   return (
     <div>
       <p>{problem.question}</p>
