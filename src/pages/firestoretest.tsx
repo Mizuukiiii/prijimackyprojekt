@@ -46,27 +46,27 @@ function ExampleComponent() {
 
   return (
     <Box border={1} padding={2} margin={2} display="flex" justifyContent="center">
-      <Typography variant="h5" gutterBottom>
-        {currentQuestion?.questions}
+      <Typography variant="h4" gutterBottom>
+        {currentQuestion.questions}
       </Typography>
       <Grid container spacing={2}>
         {['choiceone', 'choicetwo', 'choicethree'].map((choice, index) => (
           <Grid item xs={4} key={index}>
             <Box
-              border={1}
-              padding={2}
+              border={2}
+              padding={1}
               onClick={() => handleChoiceClick(currentQuestion[choice])}
               style={{
-                cursor: 'pointer',
+                cursor: 'default',
                 backgroundColor:
                   selectedAnswer === currentQuestion[choice]
                     ? isCorrect
-                      ? 'green'
-                      : 'red'
+                      ? 'blue'
+                      : 'dark-red'
                     : '',
               }}
             >
-              <Typography variant="body1">{currentQuestion[choice]}</Typography>
+              <Typography variant="h2">{currentQuestion[choice]}</Typography>
             </Box>
           </Grid>
         ))}

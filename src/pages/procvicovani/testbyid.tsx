@@ -16,12 +16,11 @@ const GET_MATH_PROBLEM_BY_ID = gql`
     }
   }
 `;
-const rowCount = 10;
+
+const rowCount = 5;
+const categoryName = "slovniulohy";
 
 const MathProblemComponent = () => {
-  sessionStorage.clear();
-
-  
   const [usedQuestionIds, setUsedQuestionIds] = useSessionStorage<number[]>('usedQuestionIds', []);
   const generateRandomId = useCallback(() => {
     let randomId;
@@ -35,36 +34,36 @@ const MathProblemComponent = () => {
 
   const [currentQuestionId, setCurrentQuestionId] = useState<number>(generateRandomId());
   const [selectedChoice, setSelectedChoice] = useState(null);
-  const [showNextButton, setShowNextButton] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null); // Updated the state type
 
   const { loading, error, data } = useQuery(GET_MATH_PROBLEM_BY_ID, {
-    variables: { collectionName: "slovniulohy", id: currentQuestionId.toString() }
+    variables: { collectionName: categoryName, id: currentQuestionId.toString() }
   });
 
   useEffect(() => {
     setCurrentQuestionId(generateRandomId());
   }, [generateRandomId]);
 
-  
-
   const handleChoiceClick = (choice: any) => {
-    if (choice === data?.mathProblemById.correct) {
-      setShowNextButton(true);
-    }
     setSelectedChoice(choice);
+  };
+
+  const handleCheckClick = () => {
+    setIsCorrect(selectedChoice === data?.mathProblemById.correct);
   };
 
   const handleNextClick = () => {
     setUsedQuestionIds([...usedQuestionIds, currentQuestionId]);
     setSelectedChoice(null);
-    setShowNextButton(false);
+    setIsCorrect(null); // Reset correctness status
+    setCurrentQuestionId(generateRandomId());
   };
 
-  const getButtonColor = (choice:string) => {
-    if (showNextButton) {
+  const getButtonColor = (choice: string) => {
+    if (isCorrect !== null) {
       return choice === data?.mathProblemById.correct ? 'green' : 'red';
     } else {
-      return 'white';
+      return selectedChoice === choice ? 'light-blue' : 'white';
     }
   };
 
@@ -139,7 +138,31 @@ const MathProblemComponent = () => {
         ))}
       </Box>
 
-      {showNextButton && (
+      <Button
+        variant="contained"
+        sx={{
+          marginTop: '20px',
+          backgroundColor: 'blue',
+          color: 'white',
+          borderRadius: '10px',
+          padding: '10px',
+        }}
+        onClick={handleCheckClick}
+      >
+        Zkontrolovat
+      </Button>
+
+      {isCorrect !== null && (
+        <Box sx={{ marginTop: '20px' }}>
+          <Typography sx={{ color: isCorrect ? 'green' : 'red' }}>
+            {isCorrect
+              ? `Správně! ${mathProblem.correct} je správná odpověď.`
+              : `Špatně! Správná odpověď je: ${mathProblem.correct}`}
+          </Typography>
+        </Box>
+      )}
+
+      {isCorrect !== null && (
         <Button
           variant="contained"
           sx={{
@@ -151,7 +174,7 @@ const MathProblemComponent = () => {
           }}
           onClick={handleNextClick}
         >
-          Next
+          Další
         </Button>
       )}
     </Box>

@@ -18,7 +18,7 @@ import { useAuthContext } from './auth-context-provider';
 
 const stranky = [
   ['procvicovani', 'Procvičování'],
-  ['cenik', 'Ceník'],
+  ['test', 'Test'],
 ];
 
 function Navbar() {
