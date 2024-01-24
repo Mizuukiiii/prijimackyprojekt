@@ -10,15 +10,13 @@ function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const router = useRouter();
+
   const handleForm = async (event: FormEvent) => {
     event.preventDefault();
     await authUtils.login(email, password);
     return router.push('/');
   };
-  const handleLogout = async () => {
-    await authUtils.logout();
-    return router.push('/');
-  };
+
   return (
     <>
       <Navbar />
@@ -57,25 +55,17 @@ function Login() {
             </Button>
           </Box>
         </form>
-        <Link href={'/registrace'} key={'registace'}>
-              <Button
-                variant="contained"
-                sx={{ mr: 2, backgroundColor: '#1961ff' }}
-              >
-                Registruj se
-              </Button>
-        </Link>
-        <Button
-              variant="contained"
-              sx={{ ml: 2, backgroundColor: '#1961ff' }}
-              onClick={handleLogout}
-            >
-              Odhlásit se
-            </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Typography>
+            Nejste zaregistrováni?{' '}
+            <Link href="/registrace" underline="hover">
+              Klikněte sem
+            </Link>
+          </Typography>
+        </Box>
       </Box>
     </>
   );
 }
-// eslint-disable-next-line import/no-default-export
-export default Login;
 
+export default Login;

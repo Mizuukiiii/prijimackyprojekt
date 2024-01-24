@@ -15,10 +15,11 @@ import * as React from 'react';
 import { firebaseApp } from '@/firebase/config';
 import { authUtils } from '../firebase/auth-utils';
 import { useAuthContext } from './auth-context-provider';
+import { Popper, Grow, Paper, ClickAwayListener, MenuList } from '@mui/material';
 
 const stranky = [
   ['procvicovani', 'Procvičování'],
-  ['test', 'Test'],
+  // ['test', 'Test'],
 ];
 
 function Navbar() {
@@ -26,6 +27,42 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
+  const [openProfileMenu, setOpenProfileMenu] = React.useState(false);
+  const anchorRefProfileMenu = React.useRef<HTMLButtonElement>(null);
+
+  const handleToggleProfileMenu = () => {
+    setOpenProfileMenu((prevOpen) => !prevOpen);
+  };
+
+  const handleCloseProfileMenu = (event: Event | React.SyntheticEvent) => {
+    if (
+      anchorRefProfileMenu.current &&
+      anchorRefProfileMenu.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpenProfileMenu(false);
+  };
+
+  function handleProfileMenuKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpenProfileMenu(false);
+    } else if (event.key === 'Escape') {
+      setOpenProfileMenu(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpenProfileMenu = React.useRef(openProfileMenu);
+  React.useEffect(() => {
+    if (prevOpenProfileMenu.current === true && openProfileMenu === false) {
+      anchorRefProfileMenu.current!.focus();
+    }
+
+    prevOpenProfileMenu.current = openProfileMenu;
+  }, [openProfileMenu]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -40,7 +77,7 @@ function Navbar() {
     return router.push('/');
   };
   return (
-    
+
     <AppBar
       position="static"
       style={{
@@ -67,7 +104,7 @@ function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              Prijimacky
+              PrijimackyMaster
             </Typography>
           </Link>
 
@@ -141,30 +178,84 @@ function Navbar() {
               </Link>
             ))}
           </Box>
-
+                
           {currentUser?.displayName ? (
-            <Box sx={{ mr: 5 }}>{currentUser.displayName}</Box>
+            <Box sx={{ mr: 5 }}>
+              <Button
+                ref={anchorRefProfileMenu}
+                id="profile-menu-button"
+                aria-controls={openProfileMenu ? 'profile-menu' : undefined}
+                aria-expanded={openProfileMenu ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleToggleProfileMenu}
+              >
+                {currentUser.displayName}
+              </Button>
+              <Popper
+                open={openProfileMenu}
+                anchorEl={anchorRefProfileMenu.current}
+                role={undefined}
+                placement="bottom-start"
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === 'bottom-start' ? 'left top' : 'left bottom',
+                    }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={handleCloseProfileMenu}>
+                        <MenuList
+                          autoFocusItem={openProfileMenu}
+                          id="profile-menu"
+                          aria-labelledby="profile-menu-button"
+                          onKeyDown={handleProfileMenuKeyDown}
+                        >
+                          <MenuItem onClick={handleCloseProfileMenu}>
+                            <Link href="/muj-ucet" passHref>
+                              <Typography color="inherit" variant="inherit">
+                                Můj Účet
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                          <MenuItem onClick={handleCloseProfileMenu}>
+                            <Link href="/historie" passHref>
+                              <Typography color="inherit" variant="inherit">
+                                Historie
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                          <MenuItem onClick={handleLogout}>Odhlásit se</MenuItem>
+
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </Box>
           ) : (
             <Link href={'/login'} key={'login'}>
               <Button
-                variant="contained"
-                sx={{ mr: 2, backgroundColor: '#1961ff' }}
+                sx={{
+                  background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                  border: 0,
+                  borderRadius: 4,
+                  mt: 2,
+                  mr: 2,
+                  boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+                  color: 'white',
+                  height: 40,
+                  padding: '0 30px',
+                }}
               >
                 Přihlásit se
               </Button>
             </Link>
-          )}
-
-          {currentUser?.displayName ? (
-            <Button
-              variant="contained"
-              sx={{ ml: 2, backgroundColor: '#1961ff' }}
-              onClick={handleLogout}
-            >
-              Odhlásit se
-            </Button>
-          ) : (
-            ' '
           )}
         </Toolbar>
       </Container>

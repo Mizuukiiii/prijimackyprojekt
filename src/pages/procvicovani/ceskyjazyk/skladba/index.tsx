@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,  Link} from '@mui/material';
 import { useSessionStorage } from 'usehooks-ts';
+
+import NextLink from 'next/link';
 
 const GET_MATH_PROBLEM_BY_ID = gql`
   query GetMathProblemById($collectionName: String!, $id: String!) {
@@ -17,10 +19,11 @@ const GET_MATH_PROBLEM_BY_ID = gql`
   }
 `;
 
-const rowCount = 4;
-const categoryName = "mathProblems";
+const rowCount = 5;
+const categoryName = "skladba";
 
 const MathProblemComponent = () => {
+
   const [usedQuestionIds, setUsedQuestionIds] = useSessionStorage<number[]>('usedQuestionIds', []);
   const generateRandomId = useCallback(() => {
     let randomId;
@@ -34,7 +37,10 @@ const MathProblemComponent = () => {
 
   const [currentQuestionId, setCurrentQuestionId] = useState<number>(generateRandomId());
   const [selectedChoice, setSelectedChoice] = useState(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null); // Updated the state type
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [wrongCount, setWrongCount] = useState<number>(0);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const { loading, error, data } = useQuery(GET_MATH_PROBLEM_BY_ID, {
     variables: { collectionName: categoryName, id: currentQuestionId.toString() }
@@ -46,17 +52,38 @@ const MathProblemComponent = () => {
 
   const handleChoiceClick = (choice: any) => {
     setSelectedChoice(choice);
+    handleCheckAnswer(choice);
+
+    // Check if rowCount exercises are completed
+    if (usedQuestionIds.length === rowCount - 1) {
+      setIsDialogOpen(true);
+    }
   };
 
-  const handleCheckClick = () => {
-    setIsCorrect(selectedChoice === data?.mathProblemById.correct);
+  const handleCheckAnswer = (selectedChoice: any) => {
+    const isCorrectAnswer = selectedChoice === data?.mathProblemById.correct;
+    setIsCorrect(isCorrectAnswer);
+
+    // Update counts
+    if (isCorrectAnswer) {
+      setCorrectCount(correctCount + 1);
+    } else {
+      setWrongCount(wrongCount + 1);
+    }
   };
 
   const handleNextClick = () => {
     setUsedQuestionIds([...usedQuestionIds, currentQuestionId]);
     setSelectedChoice(null);
-    setIsCorrect(null); // Reset correctness status
+    setIsCorrect(null);
     setCurrentQuestionId(generateRandomId());
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setCorrectCount(0);
+    setWrongCount(0);
+    setUsedQuestionIds([]);
   };
 
   const getButtonColor = (choice: string) => {
@@ -85,25 +112,27 @@ const MathProblemComponent = () => {
       <Box
         sx={{
           height: '45%',
-          width: '45%',
-          border: '1px solid gray',
+          width: '700px',
+          backgroundColor: '#e6f7ff',
           boxShadow: 3,
           padding: '10px',
-          textAlign: 'center',
-          verticalAlign: 'middle',
+          textAlign: 'left',
           overflowWrap: 'break-word',
           maxWidth: '50%',
           borderRadius: '10px',
         }}
       >
-        <Typography sx={{ pt: 13, mx: 10 }}>{mathProblem.zadani}</Typography>
+        <Typography sx={{ pt: 13, mx: 10, fontWeight: 'bold', color: 'black' }}>{mathProblem.zadani}</Typography>
       </Box>
 
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '30px',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '20px',
+          width: '100%',
         }}
       >
         {['choiceone', 'choicetwo', 'choicethree'].map((choice, index) => (
@@ -113,14 +142,14 @@ const MathProblemComponent = () => {
             sx={{
               borderColor: 'black',
               backgroundColor: getButtonColor(mathProblem[choice]),
-              height: '100px',
-              width: '200px',
+              height: '60px',
+              width: '700px',
               borderRadius: '10px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
-              mx: 3,
+              my: 1,
             }}
             onClick={() => handleChoiceClick(mathProblem[choice])}
           >
@@ -128,8 +157,9 @@ const MathProblemComponent = () => {
               sx={{
                 fontSize: '16px',
                 color: 'black',
-                textAlign: 'center',
+                textAlign: 'left',
                 padding: '10px',
+                textTransform: 'none',
               }}
             >
               {mathProblem[choice]}
@@ -137,20 +167,6 @@ const MathProblemComponent = () => {
           </Button>
         ))}
       </Box>
-
-      <Button
-        variant="contained"
-        sx={{
-          marginTop: '20px',
-          backgroundColor: 'blue',
-          color: 'white',
-          borderRadius: '10px',
-          padding: '10px',
-        }}
-        onClick={handleCheckClick}
-      >
-        Zkontrolovat
-      </Button>
 
       {isCorrect !== null && (
         <Box sx={{ marginTop: '20px' }}>
@@ -171,12 +187,29 @@ const MathProblemComponent = () => {
             color: 'white',
             borderRadius: '10px',
             padding: '10px',
+            width: '45%',
           }}
           onClick={handleNextClick}
         >
           Další
         </Button>
       )}
+
+      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Výsledky</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: 'green' }}>Správně: {correctCount}</Typography>
+          <Typography sx={{ color: 'red' }}>Špatně: {wrongCount}</Typography>
+        </DialogContent>
+        <DialogActions>
+        <NextLink href="/procvicovani/ceskyjazyk" passHref>
+            <Link color="primary" underline="hover" onClick={handleDialogClose}>
+              Zpět
+            </Link>
+          </NextLink>
+          
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
