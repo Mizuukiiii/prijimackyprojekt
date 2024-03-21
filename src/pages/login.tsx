@@ -1,7 +1,5 @@
-'use client';
-
 import { Box, Button, Link, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router'; // Changed from 'next/navigation'
 import React, { FormEvent } from 'react';
 import { Navbar } from '@/components/navbar';
 import { authUtils } from '../firebase/auth-utils';
@@ -14,7 +12,13 @@ function Login() {
   const handleForm = async (event: FormEvent) => {
     event.preventDefault();
     await authUtils.login(email, password);
-    return router.push('/');
+    
+    // Check if the entered email is the same as the admin email from .env
+    if (email === process.env.ADMIN_EMAIL) {
+      return router.push('/admin');
+    } else {
+      return router.push('/');
+    }
   };
 
   return (

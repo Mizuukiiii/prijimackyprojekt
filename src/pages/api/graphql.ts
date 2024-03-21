@@ -17,6 +17,8 @@ const typeDefs = gql`
 
   type Mutation {
     updateNumberOfExercises(uid: String!, newNumberOfExercises: String!, newNumberOfExercisesInTest: String!): User
+    addExercise(collectionName: String!, exerciseInput: ExerciseInput!): mathProblemById
+
   }
 
   type mathProblemById {
@@ -38,6 +40,26 @@ const typeDefs = gql`
     numberofexercisesintest: String
     score: String
   }
+
+  input ExerciseInput {
+  collectionName: String!
+  choiceone: String!
+  choicetwo: String!
+  choicethree: String!
+  correct: String!
+  zadani: String!
+}
+
+
+  type Exercise {
+    id: String!
+    collectionName: String!
+    choiceone: String
+    choicetwo: String
+    choicethree: String
+    correct: String
+    zadani: String
+  }
 `;
 
 const db = firestore();
@@ -55,20 +77,12 @@ const resolvers = {
         throw new Error('Question not found');
       }
 
-      const choiceone = docSnapshot.get('choiceone');
-      const choicetwo = docSnapshot.get('choicetwo');
-      const choicethree = docSnapshot.get('choicethree');
-      const correct = docSnapshot.get('correct');
-      const zadani = docSnapshot.get('zadani');
+      const data = docSnapshot.data();
 
       return {
         id,
         collectionName,
-        choiceone,
-        choicetwo,
-        choicethree,
-        correct,
-        zadani,
+        ...data,
       };
     },
     getUserById: async (
@@ -98,13 +112,11 @@ const resolvers = {
       const userDocRef = db.doc(`users/${uid}`);
 
       try {
-        // Update the field in the document
         await userDocRef.update({
           numberofexercises: newNumberOfExercises,
           numberofexercisesintest: newNumberOfExercisesInTest,
         });
 
-        // Fetch and return the updated user data
         const userDocSnapshot = await userDocRef.get();
         const userData = userDocSnapshot.data();
         return {
@@ -113,6 +125,30 @@ const resolvers = {
         };
       } catch (error:any) {
         throw new Error(`Error updating number of exercises: ${error.message}`);
+      }
+    },
+
+    addExercise: async (
+      _: any,
+      { collectionName, exerciseInput }: { collectionName: string; exerciseInput: any }
+    ) => {
+      const exerciseCollectionRef = db.collection(collectionName);
+  
+      try {
+        const querySnapshot = await exerciseCollectionRef.get();
+        const numberOfDocuments = querySnapshot.size;
+  
+        const newDocumentName = `${numberOfDocuments + 1}`;
+  
+        await exerciseCollectionRef.doc(newDocumentName).set(exerciseInput);
+  
+        return {
+          id: newDocumentName,
+          collectionName,
+          ...exerciseInput,
+        };
+      } catch (error: any) {
+        throw new Error(`Error adding new exercise: ${error.message}`);
       }
     },
   },

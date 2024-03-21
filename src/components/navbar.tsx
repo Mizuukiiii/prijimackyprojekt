@@ -189,7 +189,7 @@ function Navbar() {
                 aria-haspopup="true"
                 onClick={handleToggleProfileMenu}
               >
-                {currentUser.displayName}
+                {currentUser.email}
               </Button>
               <Popper
                 open={openProfileMenu}

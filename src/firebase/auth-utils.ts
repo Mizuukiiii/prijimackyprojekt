@@ -20,26 +20,21 @@ export const authUtils = {
   register: async (email: string, password: string, displayName: string) => {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-    // Update user profile
     await updateProfile(user, {
       displayName,
     });
 
-    // Store additional user data in Firestore
     await addUserToFirestore(user.uid, {
       email,
       displayName,
-      // You can add more user data as needed
     });
   },
   getCurrentUser: () => auth.currentUser,
 };
 
-// Helper function to add user to Firestore
 const addUserToFirestore = async (userId: string, userData: any) => {
   const usersCollection = collection(firestore, 'users');
 
-  // Set the user data with the UID as the document ID
   await setDoc(doc(usersCollection, userId), {
     uid: userId,
     score: 0,
