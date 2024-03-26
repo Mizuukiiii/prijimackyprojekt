@@ -1,4 +1,4 @@
-import { firebaseApp } from "../config";
+import firebaseApp  from "../config";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
 const auth = getAuth(firebaseApp);
@@ -12,6 +12,5 @@ export default async function signUp(email: string, password: string) {
     } catch (e) {
         error = e;
     }
-
     return { result, error };
 }

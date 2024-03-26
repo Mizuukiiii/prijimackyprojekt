@@ -1,23 +1,28 @@
 import { Box, Button, Link, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router'; // Changed from 'next/navigation'
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { authUtils } from '../firebase/auth-utils';
 
 function Login() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   const handleForm = async (event: FormEvent) => {
     event.preventDefault();
-    await authUtils.login(email, password);
-    
-    // Check if the entered email is the same as the admin email from .env
-    if (email === process.env.ADMIN_EMAIL) {
-      return router.push('/admin');
-    } else {
-      return router.push('/');
+    try {
+      await authUtils.login(email, password);
+
+      // Check if the entered email is the same as the admin email from .env
+      if (email === process.env.ADMIN_EMAIL) {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
+    } catch (error) {
+      setErrorMessage('Incorrect email or password. Please try again.');
     }
   };
 
@@ -31,6 +36,11 @@ function Login() {
           </Typography>
         </Box>
         <form onSubmit={handleForm}>
+          {errorMessage && (
+            <Typography color="error" sx={{ mt: 2, textAlign: 'center' }}>
+              {errorMessage}
+            </Typography>
+          )}
           <Box sx={{ height: 20 }}></Box>
           <TextField
             required
@@ -53,7 +63,7 @@ function Login() {
           />
 
           <Box></Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
             <Button type="submit" variant="contained" sx={{ mt: 5 }}>
               Přihlásit se
             </Button>

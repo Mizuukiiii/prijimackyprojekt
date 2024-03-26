@@ -9,8 +9,8 @@ import { useMutation } from '@apollo/client';
 import { gql } from 'graphql-tag';
 
 const ADD_EXERCISE = gql`
-  mutation AddExercise($collectionName: String!, $newExerciseData: mathProblemById!) {
-    addExercise(collectionName: $collectionName, newExerciseData: $newExerciseData) {
+  mutation AddExercise($collectionName: String!, $newExerciseData: ExerciseInput!) {
+    addExercise(collectionName: $collectionName, exerciseInput: $newExerciseData) {
       id
       collectionName
       choiceone
@@ -63,7 +63,7 @@ const AdminPage = () => {
       await addExercise({
         variables: {
           collectionName: exerciseData.collectionName,
-          exerciseInput: {
+          newExerciseData: {
             choiceone: exerciseData.newExerciseData.choiceone,
             choicetwo: exerciseData.newExerciseData.choicetwo,
             choicethree: exerciseData.newExerciseData.choicethree,
@@ -77,7 +77,6 @@ const AdminPage = () => {
       console.error('Error adding exercise:', error);
     }
   };
-  
   
 
   useEffect(() => {

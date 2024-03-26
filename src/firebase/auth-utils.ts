@@ -5,7 +5,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, collection, addDoc } from 'firebase/firestore';
-import { firebaseApp } from '../firebase/config';
+import firebaseApp  from '../firebase/config';
 
 const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);

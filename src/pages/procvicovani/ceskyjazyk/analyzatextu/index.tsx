@@ -54,7 +54,6 @@ const MathProblemComponent = () => {
     setSelectedChoice(choice);
     handleCheckAnswer(choice);
 
-    // Check if rowCount exercises are completed
     if (usedQuestionIds.length === rowCount - 1) {
       setIsDialogOpen(true);
     }
@@ -64,7 +63,6 @@ const MathProblemComponent = () => {
     const isCorrectAnswer = selectedChoice === data?.mathProblemById.correct;
     setIsCorrect(isCorrectAnswer);
 
-    // Update counts
     if (isCorrectAnswer) {
       setCorrectCount(correctCount + 1);
     } else {
