@@ -17,8 +17,7 @@ const typeDefs = gql`
 
   type Mutation {
     updateNumberOfExercises(uid: String!, newNumberOfExercises: String!, newNumberOfExercisesInTest: String!): User
-    addExercise(collectionName: String!, exerciseInput: ExerciseInput!): mathProblemById
-
+    addExercise(collectionName: String!, documentName: String!, choiceone: String!, choicetwo: String!, choicethree: String!, zadani: String!, correct: String!): mathProblemById
   }
 
   type mathProblemById {
@@ -39,26 +38,6 @@ const typeDefs = gql`
     numberofexercises: String
     numberofexercisesintest: String
     score: String
-  }
-
-  input ExerciseInput {
-  collectionName: String!
-  choiceone: String!
-  choicetwo: String!
-  choicethree: String!
-  correct: String!
-  zadani: String!
-}
-
-
-  type Exercise {
-    id: String!
-    collectionName: String!
-    choiceone: String
-    choicetwo: String
-    choicethree: String
-    correct: String
-    zadani: String
   }
 `;
 
@@ -130,22 +109,24 @@ const resolvers = {
 
     addExercise: async (
       _: any,
-      { collectionName, exerciseInput }: { collectionName: string; exerciseInput: any }
+      { collectionName, documentName, choiceone, choicetwo, choicethree, zadani, correct }: { collectionName: string; documentName: string; choiceone: string; choicetwo: string; choicethree: string; zadani: string; correct: string; }
     ) => {
-      const exerciseCollectionRef = db.collection(collectionName);
-  
       try {
-        const querySnapshot = await exerciseCollectionRef.get();
-        const numberOfDocuments = querySnapshot.size;
-  
-        const newDocumentName = `${numberOfDocuments + 1}`;
-  
-        await exerciseCollectionRef.doc(newDocumentName).set(exerciseInput);
-  
+        await db.collection(collectionName).doc(documentName).set({
+          choiceone,
+          choicetwo,
+          choicethree,
+          zadani,
+          correct,
+        });
         return {
-          id: newDocumentName,
+          id: documentName,
           collectionName,
-          ...exerciseInput,
+          choiceone, 
+          choicetwo,
+          choicethree,
+          zadani,
+          correct,
         };
       } catch (error: any) {
         throw new Error(`Error adding new exercise: ${error.message}`);

@@ -19,11 +19,13 @@ const GET_MATH_PROBLEM_BY_ID = gql`
   }
 `;
 
+
+
 const rowCount = 5;
 const categoryName = "pravopis";
 
 const MathProblemComponent = () => {
-
+  
   const [usedQuestionIds, setUsedQuestionIds] = useSessionStorage<number[]>('usedQuestionIds', []);
   const generateRandomId = useCallback(() => {
     let randomId;

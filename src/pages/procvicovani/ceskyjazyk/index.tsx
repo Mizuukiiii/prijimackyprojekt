@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Grid, Button, Box, List, ListItem, ListItemIcon, CardActionArea, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import React from 'react';
+import { Card, CardContent, Typography, Grid, Button, Box, List, ListItem, ListItemIcon, CardActionArea } from '@mui/material';
 import { FiberManualRecord } from '@mui/icons-material'; // Import the dot icon
 import { useRouter } from 'next/router';
 import { Navbar } from '@/components/navbar';
@@ -10,32 +10,17 @@ interface BulletPoints {
 
 const SideBar = () => {
   const router = useRouter();
-  const [numExercises, setNumExercises] = useState(5); // Default number of exercises
-  const [timer, setTimer] = useState(0); // Default timer value
-  const [openNumExercisesDialog, setOpenNumExercisesDialog] = useState(false);
-  const [openTimerDialog, setOpenTimerDialog] = useState(false);
+
+ 
 
   const formatPath = (text: string) => {
     const normalizedText = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return normalizedText.toLowerCase().replace(/\s+/g, '-');
   };
 
-  const handleProcvicovatClick = () => {
-    setOpenNumExercisesDialog(true);
-  };
-
-  const handleNumExercisesDialogClose = () => {
-    setOpenNumExercisesDialog(false);
-  };
-
-  const handleTimerDialogClose = () => {
-    setOpenTimerDialog(false);
-  };
-
-  const handleStartExercise = () => {
-    const formattedPath = formatPath('test');
-    const queryParams = `?exercises=${numExercises}&timer=${timer}`;
-    router.push(`/procvicovani/ceskyjazyk/${formattedPath}${queryParams}`);
+  const handleProcvicovatClick = (topic: string) => {
+    const formattedPath = formatPath(topic);
+    router.push(`/procvicovani/ceskyjazyk/${formattedPath}`);
   };
 
   const bulletPoints: BulletPoints = {
@@ -71,7 +56,7 @@ const SideBar = () => {
                     ))}
                   </List>
                   <Box textAlign="center">
-                    <Button variant="contained" color="secondary" onClick={handleProcvicovatClick}>
+                    <Button variant="contained" color="secondary" onClick={() => handleProcvicovatClick(item)}>
                       Procvičovat
                     </Button>
                   </Box>
@@ -81,61 +66,6 @@ const SideBar = () => {
           </Grid>
         ))}
       </Grid>
-
-      {/* Input Dialog for Number of Exercises */}
-      <Dialog open={openNumExercisesDialog} onClose={handleNumExercisesDialogClose}>
-        <DialogTitle>Number of Exercises</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="numExercises"
-            label="Number of Exercises"
-            type="number"
-            value={numExercises}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (value >= 1 && value <= 10) {
-                setNumExercises(value);
-              }
-            }}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleNumExercisesDialogClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleStartExercise} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Input Dialog for Timer */}
-      <Dialog open={openTimerDialog} onClose={handleTimerDialogClose}>
-        <DialogTitle>Timer</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="timer"
-            label="Timer (in minutes)"
-            type="number"
-            value={timer}
-            onChange={(e) => setTimer(parseInt(e.target.value))}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleTimerDialogClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleStartExercise} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };

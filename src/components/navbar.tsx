@@ -12,18 +12,20 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import router from 'next/router';
 import * as React from 'react';
-import  firebaseApp  from '@/firebase/config';
+import firebaseApp from '@/firebase/config';
 import { authUtils } from '../firebase/auth-utils';
 import { useAuthContext } from './auth-context-provider';
 import { Popper, Grow, Paper, ClickAwayListener, MenuList } from '@mui/material';
 
 const stranky = [
   ['procvicovani', 'Procvičování'],
-  // ['test', 'Test'],
 ];
+
+
 
 function Navbar() {
   const { currentUser } = useAuthContext();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -54,7 +56,6 @@ function Navbar() {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
   const prevOpenProfileMenu = React.useRef(openProfileMenu);
   React.useEffect(() => {
     if (prevOpenProfileMenu.current === true && openProfileMenu === false) {
@@ -142,6 +143,7 @@ function Navbar() {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+                
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -178,7 +180,11 @@ function Navbar() {
               </Link>
             ))}
           </Box>
-                
+          {currentUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+          <MenuItem onClick={() => router.push('/admin')}>
+                  <Typography textAlign="center">Stránka Admina</Typography>
+                </MenuItem>
+                )}
           {currentUser?.displayName ? (
             <Box sx={{ mr: 5 }}>
               <Button
@@ -189,7 +195,7 @@ function Navbar() {
                 aria-haspopup="true"
                 onClick={handleToggleProfileMenu}
               >
-                {currentUser.email}
+                {currentUser.displayName}
               </Button>
               <Popper
                 open={openProfileMenu}

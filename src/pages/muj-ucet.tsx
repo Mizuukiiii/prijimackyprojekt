@@ -75,44 +75,29 @@ const ProfilePage: React.FC = () => {
       <Navbar />
       <Box sx={{ mt: 15, mx: 5 }}>
         <Typography variant="h4" fontWeight="bold" mb={3}>
-          My Profile
+          Můj profil
         </Typography>
 
         <Box>
-          <Typography variant="h6">Username: {user.displayName}</Typography>
+          <Typography variant="h6">Přezdívka: {user.displayName}</Typography>
           <Typography variant="body1">Email: {user.email}</Typography>
           <Typography variant="body1">Score: {user.score}</Typography>
           <Typography variant="body1">Aktuální počet příkladů v procvičování kategorií: {user.numberofexercises}</Typography>
-          <Typography variant="body1">Aktuální počet příkladů v procvičování testů: {user.numberofexercisesintest}</Typography>
 
-          {/* Selector for choosing the number of exercises */}
           <Box mt={2}>
             <Typography variant="body1">Zvol počet příkladů v procvičování jedné kategorie:</Typography>
             <Select
               value={selectedExercises}
               onChange={(e) => setSelectedExercises(e.target.value as string)}
             >
-              {[5, 10, 15, 20].map((count) => (
+              {[5, 6, 7, 8, 9, 10].map((count) => (
                 <MenuItem key={count} value={count.toString()}>
                   {count}
                 </MenuItem>
               ))}
             </Select>
           </Box>
-          <Box mt={2}>
-            <Typography variant="body1">Zvol počet příkladů v procvičování jednom testu:</Typography>
-            <Select
-              value={selectedExercisesInTest}
-              onChange={(e) => setSelectedExercisesInTest(e.target.value as string)}
-              defaultValue="40"
-            >
-              {[30, 40, 50, 60, 70].map((count) => (
-                <MenuItem key={count} value={count.toString()}>
-                  {count}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
+         
         </Box>
       </Box>
     </>

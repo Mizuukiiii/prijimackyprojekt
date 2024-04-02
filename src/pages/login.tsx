@@ -15,14 +15,14 @@ function Login() {
     try {
       await authUtils.login(email, password);
 
-      // Check if the entered email is the same as the admin email from .env
+      
       if (email === process.env.ADMIN_EMAIL) {
         router.push('/admin');
       } else {
         router.push('/');
       }
     } catch (error) {
-      setErrorMessage('Incorrect email or password. Please try again.');
+      setErrorMessage('Špatně zadaný e-mail nebo heslo.');
     }
   };
 

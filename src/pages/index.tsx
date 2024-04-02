@@ -1,7 +1,7 @@
 // src/pages/index.js
 import React from 'react';
 import { Navbar } from '../components/navbar';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Link, Typography } from '@mui/material';
 
 const Home = () => {
   return (
@@ -42,20 +42,25 @@ const Home = () => {
                 Zlepši své znalosti, abys při zkoušce neudělal žádnou chybu.
               </Typography>
             </Container>
-            <Button
-              sx={{
-                background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-                border: 0,
-                borderRadius: 4,
-                mt: 5,
-                boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
-                color: 'white',
-                height: 48,
-                padding: '0 30px',
-              }}
-            >
-              Začít procvičovat!
-            </Button>
+            <Link href="/procvicovani">
+              <Button
+                component="a" // Use component="a" for Link components in MUI
+                sx={{
+                  background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                  border: 0,
+                  borderRadius: 4,
+                  mt: 5,
+                  boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+                  color: 'white',
+                  height: 48,
+                  padding: '0 30px',
+                  textDecoration: 'none', // Ensure button behaves like a link
+                  cursor: 'pointer', // Show pointer on hover
+                }}
+              >
+                Začít procvičovat!
+              </Button>
+            </Link>
           </Grid>
           <Grid item xs={12} md={6}>
             <Box
@@ -67,7 +72,6 @@ const Home = () => {
           </Grid>
         </Grid>
 
-        {/* Layer 2 */}
         <Grid container spacing={2} sx={{ mt: 25 }}>
           <Grid item xs={12} md={6}>
             <Box
@@ -92,26 +96,29 @@ const Home = () => {
             >
               Naučí vás na přijímačky stejně dobře jako škola a to zdarma a rychle.
             </Typography>
-            <Button
-              sx={{
-                background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-                border: 0,
-                borderRadius: 4,
-                mt: 2,
-                boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
-                color: 'white',
-                height: 48,
-                padding: '0 30px',
-              }}
-            >
-              Chci vědet víc!
-            </Button>
+            <Link href="/procvicovani">
+              <Button
+                component="a" // Use component="a" for Link components in MUI
+                sx={{
+                  background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                  border: 0,
+                  borderRadius: 4,
+                  mt: 2,
+                  boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+                  color: 'white',
+                  height: 48,
+                  padding: '0 30px',
+                  textDecoration: 'none', // Ensure button behaves like a link
+                  cursor: 'pointer', // Show pointer on hover
+                }}
+              >
+                Chci vědět víc!
+              </Button>
+            </Link>
           </Grid>
         </Grid>
 
-        {/* Layer 3 - Testimonials */}
         <Grid container spacing={2} sx={{ mt: 25 }}>
-          {/* Testimonial 1 */}
           <Grid item xs={12} md={4}>
             <Box
               sx={{
@@ -123,7 +130,7 @@ const Home = () => {
             >
               <Box
                 component="img"
-                src="person1.jpg"
+                src="persontwo.png"
                 alt="Person 1"
                 sx={{
                   width: '80px',
@@ -146,7 +153,6 @@ const Home = () => {
             </Box>
           </Grid>
 
-          {/* Testimonial 2 */}
           <Grid item xs={12} md={4}>
             <Box
               sx={{
@@ -170,10 +176,10 @@ const Home = () => {
                 }}
               />
               <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-                Jane Smith
+                Jana Nováková
               </Typography>
               <Typography variant="body2" sx={{ mb: 2 }}>
-                This platform made my preparation stress-free and efficient.
+                Tahle stránka je snadná na použití.
               </Typography>
               <Typography variant="body2" sx={{ color: '#FFD700' }}>
                 ★★★★★
@@ -181,7 +187,6 @@ const Home = () => {
             </Box>
           </Grid>
 
-          {/* Testimonial 3 */}
           <Grid item xs={12} md={4}>
             <Box
               sx={{
@@ -193,7 +198,7 @@ const Home = () => {
             >
               <Box
                 component="img"
-                src="person3.jpg"
+                src="personthree.png"
                 alt="Person 3"
                 sx={{
                   width: '80px',
@@ -205,10 +210,10 @@ const Home = () => {
                 }}
               />
               <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-                Alex Johnson
+                Rostislav Baterka
               </Typography>
               <Typography variant="body2" sx={{ mb: 2 }}>
-                I highly recommend this to anyone preparing for exams.
+                Velice doporučuji
               </Typography>
               <Typography variant="body2" sx={{ color: '#FFD700' }}>
                 ★★★★★
