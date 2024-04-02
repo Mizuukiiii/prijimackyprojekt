@@ -221,13 +221,13 @@ function Navbar() {
                           aria-labelledby="profile-menu-button"
                           onKeyDown={handleProfileMenuKeyDown}
                         >
-                          <MenuItem onClick={handleCloseProfileMenu}>
+                          {/* <MenuItem onClick={handleCloseProfileMenu}>
                             <Link href="/muj-ucet" passHref>
                               <Typography color="inherit" variant="inherit">
                                 Můj Účet
                               </Typography>
                             </Link>
-                          </MenuItem>
+                          </MenuItem> */}
                           <MenuItem onClick={handleCloseProfileMenu}>
                             <Link href="/historie" passHref>
                               <Typography color="inherit" variant="inherit">
