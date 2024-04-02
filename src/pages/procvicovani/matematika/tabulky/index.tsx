@@ -18,9 +18,9 @@ const GET_MATH_PROBLEM_BY_ID = gql`
     }
   }
 `;
-const maxExercises = 11;
+const maxExercises = 5;
 const rowCount = 5;
-const categoryName = "pravopis";
+const categoryName = "tabulky";
 
 const MathProblemComponent = () => {
   const [usedQuestionIds, setUsedQuestionIds] = useSessionStorage<number[]>('usedQuestionIds', []);
@@ -217,7 +217,7 @@ const MathProblemComponent = () => {
             <Typography sx={{ color: 'red' }}>Špatně: {wrongCount}</Typography>
           </DialogContent>
           <DialogActions>
-            <NextLink href="/procvicovani/ceskyjazyk" passHref>
+            <NextLink href="/procvicovani/matematika" passHref>
               <Link color="primary" underline="hover" onClick={handleDialogClose}>
                 Zpět
               </Link>

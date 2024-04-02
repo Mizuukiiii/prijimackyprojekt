@@ -18,9 +18,9 @@ const GET_MATH_PROBLEM_BY_ID = gql`
     }
   }
 `;
-const maxExercises = 11;
+const maxExercises = 6;
 const rowCount = 5;
-const categoryName = "pravopis";
+const categoryName = "porozumeni";
 
 const MathProblemComponent = () => {
   const [usedQuestionIds, setUsedQuestionIds] = useSessionStorage<number[]>('usedQuestionIds', []);

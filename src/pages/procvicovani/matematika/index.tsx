@@ -18,7 +18,7 @@ const SideBar = () => {
 
   const handleProcvicovatClick = (topic: string) => {
     const formattedPath = formatPath(topic);
-    router.push(`/procvicovani/ceskyjazyk/${formattedPath}`);
+    router.push(`/procvicovani/matematika/${formattedPath}`);
   };
 
   const bulletPoints: BulletPoints = {

@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Navbar } from '@/components/navbar';
@@ -29,6 +29,7 @@ const AdminPage = () => {
   });
 
   const [addExercise, { loading, error }] = useMutation(ADD_EXERCISE);
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,6 +41,13 @@ const AdminPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Check if any field is empty
+    const isAnyFieldEmpty = Object.values(exerciseData).some(value => value === '');
+    if (isAnyFieldEmpty) {
+      return; // Prevent submission if any field is empty
+    }
+
     try {
       await addExercise({
         variables: {
@@ -52,10 +60,28 @@ const AdminPage = () => {
           correct: exerciseData.correct,
         },
       });
+
+      // Reset form state
+      setExerciseData({
+        collectionName: '',
+        documentName: '', 
+        choiceone: '',
+        choicetwo: '',
+        choicethree: '',
+        correct: '',
+        zadani: '',
+      });
+
+      // Open success dialog
+      setSuccessDialogOpen(true);
       
     } catch (error) {
       console.error('Problém:', error);
     }
+  };
+
+  const handleDialogClose = () => {
+    setSuccessDialogOpen(false);
   };
 
   useEffect(() => {
@@ -81,6 +107,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="documentName"
@@ -89,6 +116,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="choiceone"
@@ -97,6 +125,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="choicetwo"
@@ -105,6 +134,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="choicethree"
@@ -113,6 +143,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="correct"
@@ -121,6 +152,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <TextField
               name="zadani"
@@ -129,6 +161,7 @@ const AdminPage = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required
             />
             <Button
               type="submit"
@@ -142,6 +175,19 @@ const AdminPage = () => {
           {error && <Typography color="error">{error.message}</Typography>}
         </Box>
       </Box>
+      <Dialog open={successDialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Úspěch</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Úspěšně přidáno do databáze.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Zavřít
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

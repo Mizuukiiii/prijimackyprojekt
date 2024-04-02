@@ -18,7 +18,7 @@ const GET_MATH_PROBLEM_BY_ID = gql`
     }
   }
 `;
-const maxExercises = 6;
+const maxExercises = 15;
 const rowCount = 5;
 const categoryName = "analyzatextu";
 
